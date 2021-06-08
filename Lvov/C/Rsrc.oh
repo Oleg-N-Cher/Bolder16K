@@ -1,0 +1,69 @@
+#ifndef Rsrc__oh
+#define Rsrc__oh
+
+#include "SYSTEM.oh"
+//#include "Config.oh"
+
+
+#define Rsrc_TileSize       (48 + 48) /* bytes */
+#define Rscr_TilePad        (768 - 36*18)
+#define Rsrc_TileWidth      16 /* pixels */
+#define Rsrc_TileHeight     12 /* pixels */
+#define Rsrc_MaxLevelNumber 11
+#define Rsrc_LevelSize      96 /* bytes */
+#define Rsrc_CharSize       12 /* bytes */
+#define Rsrc_FontSize       (96 * Rsrc_CharSize) // bytes
+#define _LastTileNum        17
+
+extern unsigned char Rsrc_field [256];
+extern const unsigned char _Rsrc_Levels [96*Rsrc_MaxLevelNumber];
+extern const unsigned char _Rsrc_Font [Rsrc_FontSize];
+extern const unsigned char _Rsrc_Tiles [Rsrc_TileSize * (_LastTileNum + 1)];
+extern const signed char Rsrc_CrossX [4];
+extern const signed char Rsrc_CrossY [4];
+
+typedef BYTE* Rsrc_Resource;
+typedef unsigned int ADDRESS;
+typedef struct Rsrc_Monstr {
+  unsigned char x, y;
+  signed char dx, dy;
+} Rsrc_Monstr;
+
+/* Set of game tiles: */
+#define Rsrc_None      ((Rsrc_Resource)( 0 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_Grass     ((Rsrc_Resource)( 1 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_Stone     ((Rsrc_Resource)( 2 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_Almas     ((Rsrc_Resource)( 3 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_StopMan   ((Rsrc_Resource)( 4 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_Wall      ((Rsrc_Resource)( 5 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_Mina      ((Rsrc_Resource)( 6 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_Babo      ((Rsrc_Resource)( 7 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_LeftMan   ((Rsrc_Resource)( 8 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_LeftMan1  ((Rsrc_Resource)( 9 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_RightMan  ((Rsrc_Resource)(10 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_RightMan1 ((Rsrc_Resource)(11 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_UpMan     ((Rsrc_Resource)(12 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_UpMan1    ((Rsrc_Resource)(13 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_DownMan   ((Rsrc_Resource)(14 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_DownMan1  ((Rsrc_Resource)(15 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_Mina1     ((Rsrc_Resource)(16 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_Babo1     ((Rsrc_Resource)(17 * 48 + &_Rsrc_Tiles[0]))
+#define Rsrc_LastTile  Rsrc_Babo1
+
+#define Rsrc_Tiles   __Rsrc_Tiles
+#define Rsrc_Levels ((int)_Rsrc_Levels)
+#define Rsrc_Font    __Rsrc_Font
+
+#define Rsrc_Close(rsrc)
+#define Rsrc_Open(name) ((ADDRESS)name)
+#define Rsrc_OpenAt(pos,name) ((ADDRESS)name + pos)
+#define Rsrc_ReadByte(rsrc) (*(BYTE*)rsrc++)
+
+extern Rsrc_Resource Rsrc_GetTileByNum (unsigned char num);
+extern unsigned char Rsrc_GetCell (unsigned char x, unsigned char y);
+extern unsigned char Rsrc_SetCell (unsigned char x, unsigned char y, unsigned char cell);
+
+#define Rsrc__init()
+
+
+#endif

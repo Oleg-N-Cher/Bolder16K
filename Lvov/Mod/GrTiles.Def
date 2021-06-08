@@ -1,0 +1,10 @@
+MODULE [foreign] GrTiles;
+
+IMPORT SYSTEM, GrApp, Rsrc;
+
+TYPE
+  Coords = SYSTEM.BYTE; Tile = Rsrc.Tile;
+
+PROCEDURE- DrawTile (x, y: Coords; tile: Tile);
+
+END GrTiles.

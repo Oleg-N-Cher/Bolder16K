@@ -1,0 +1,16 @@
+MODULE [foreign] Control; IMPORT SYSTEM, GrApp;
+
+CONST
+  (* Направление в формате кемпстон джойстика (для скорости) *)
+  Right = 4; Left = 6; Down = 7; Up = 5; Fire = 4; Esc = 5;
+
+TYPE
+  Key = CHAR; Keys = SET;
+
+PROCEDURE- Get (): Keys;
+PROCEDURE- GetCustom (): Keys;
+PROCEDURE- ReadKey (): Key; (* With auto-repeat *)
+PROCEDURE- PressedAnyKey (): BOOLEAN;
+PROCEDURE- Close;
+
+END Control.

@@ -1,0 +1,57 @@
+MODULE [noinit] Rsrc; (* non-portable (z80) *)
+
+IMPORT SYSTEM;
+
+CONST
+  MaxLevelNumber * =  11;
+  LevelSize      * =  96; (* bytes *)
+  FieldWidth     * =  16;
+  FieldHeight    * =  16;
+  FieldSize      * =   0;
+
+TYPE
+  Ident    * = ADRINT;
+  Resource * = ADRINT;
+  Tile     * = Resource;
+  NATINT   * = SYSTEM.BYTE; (* Native integer *)
+  INDEX    * = NATINT;
+  Cell     * = NATINT;
+  Coords   * = NATINT;
+  Monstr   * = RECORD [notag] x*, y*: Coords; dx*, dy*: INT8 END;
+
+VAR
+  (* Set of game tiles: *)
+  None-, Grass-, Stone-, Almas-, StopMan-, Wall-, Mina-, Babo-,
+  LeftMan-, LeftMan1-, RightMan-, RightMan1-, UpMan-, UpMan1-,
+  DownMan-, DownMan1-, Mina1-, Babo1-, LastSprite-: ADRINT;
+
+  Title-, Sprites-, Levels-, Font-: ADRINT;
+
+  (* Directions: *)
+  CrossX-, CrossY-: ARRAY 4 OF INT8;
+
+  field*: ARRAY FieldWidth * FieldHeight OF Cell;
+
+(*============================================================================*)
+(*                            Work with resources                             *)
+(*============================================================================*)
+PROCEDURE- Open* (name: Ident): Resource;
+PROCEDURE- OpenAt* (pos: ADRINT; name: Ident): Resource;
+PROCEDURE- ReadByte* (rsrc: Resource): NATINT;
+PROCEDURE- Close* (rsrc: Resource);
+PROCEDURE- GetTileByNum* (num: (* {0..17} *) NATINT): Tile;
+
+(*============================================================================*)
+(*                          Optimized access to field                         *)
+(*============================================================================*)
+PROCEDURE SetCell* (x, y: Coords; cell: Cell);
+BEGIN
+  field [y DIV 2 * FieldWidth + x DIV 2] := cell
+END SetCell;
+
+PROCEDURE GetCell* (x, y: Coords): Cell;
+BEGIN
+  RETURN field [y DIV 2 * FieldWidth + x DIV 2]
+END GetCell;
+
+END Rsrc.

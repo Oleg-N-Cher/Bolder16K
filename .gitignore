@@ -1,0 +1,6 @@
+Lvov/Obj/*.asm
+Lvov/Obj/*.c
+Lvov/Obj/*.o
+ZX/Obj/*.c
+ZX/Obj/*.rel
+ZX/Sources/*.asm

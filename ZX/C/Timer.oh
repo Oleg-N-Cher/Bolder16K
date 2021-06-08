@@ -1,0 +1,14 @@
+#ifndef Timer__oh
+#define Timer__oh
+
+
+extern signed char Timer_ticks;
+
+/* Max. delay time = 32767/50/60 ~= 10.922 min */
+#define Timer_Start(ticks) Timer_ticks = -ticks
+extern void Timer_Until (void) __preserves_regs(b,c,d,e,h,l,iyl,iyh);
+
+#define Timer__init()
+
+
+#endif
