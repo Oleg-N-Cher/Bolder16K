@@ -1,6 +1,11 @@
 Lvov/Obj/*.asm
 Lvov/Obj/*.c
 Lvov/Obj/*.o
+ZX/Obj/*.asm
 ZX/Obj/*.c
+ZX/Obj/*.lst
 ZX/Obj/*.rel
+ZX/Obj/*.sym
 ZX/Sources/*.asm
+ZX/Sources/*.bin
+ZX/Sources/*.tap
