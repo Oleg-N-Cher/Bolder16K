@@ -1,0 +1,30 @@
+MODULE [foreign] Console; IMPORT SYSTEM;
+
+CONST
+  Black    * = 0;
+  Blue     * = 1;
+  Red      * = 2;
+  Magenta  * = Red + Blue;
+  Green    * = 4;
+  Cyan     * = Green + Blue;
+  Olive    * = Red + Green;
+  White    * = Red + Green + Blue;
+  Bright     = 40H;
+  LBlue    * = Bright + Blue;
+  LRed     * = Bright + Red;
+  LMagenta * = Bright + Magenta;
+  LGreen   * = Bright + Green;
+  LCyan    * = Bright + Cyan;
+  Yellow   * = Bright + Olive;
+  LWhite   * = Bright + White;
+
+TYPE
+  BYTE = SYSTEM.BYTE;
+
+PROCEDURE- At (x (* {0..31} *), y: (* {0..11} *) BYTE);
+PROCEDURE- Clear;
+PROCEDURE- Colors (atr: (* {0..7; 40H..47H} *) BYTE);
+PROCEDURE- WriteCh (ch: CHAR);
+PROCEDURE- WriteStr (str: POINTER TO ARRAY [notag] OF CHAR);
+
+END Console.

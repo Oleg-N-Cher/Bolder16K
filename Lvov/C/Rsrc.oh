@@ -5,8 +5,7 @@
 //#include "Config.oh"
 
 
-#define Rsrc_TileSize       (48 + 48) /* bytes */
-#define Rscr_TilePad        (768 - 36*18)
+#define Rsrc_TileSize       48 /* bytes */
 #define Rsrc_TileWidth      16 /* pixels */
 #define Rsrc_TileHeight     12 /* pixels */
 #define Rsrc_MaxLevelNumber 11
@@ -15,7 +14,7 @@
 #define Rsrc_FontSize       (96 * Rsrc_CharSize) // bytes
 #define _LastTileNum        17
 
-extern unsigned char Rsrc_field [256];
+extern __at(0x0200) unsigned char Rsrc_field [256];
 extern const unsigned char _Rsrc_Levels [96*Rsrc_MaxLevelNumber];
 extern const unsigned char _Rsrc_Font [Rsrc_FontSize];
 extern const unsigned char _Rsrc_Tiles [Rsrc_TileSize * (_LastTileNum + 1)];

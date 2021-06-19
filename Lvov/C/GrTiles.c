@@ -21,16 +21,14 @@ _GrTiles_y:
         MOV  L, A   ; HL = #TAB[y * 6]
         MVI  H, Config_ScreenTable
         MOV  A, C
-        RRA         ; x DIV 2
-        JC   DRAWTILE2
-        ADD  C
+        ADD  A
         ADD  M      ; x + x DIV 2
         INR  H
         MOV  H, M   ; high screen addr byte
         MOV  L, A   ; low screen addr byte
         XRA  A
         OUT  0xC2   ; Включить видео ОЗУ
-        LXI  B, 0x0040-2
+        LXI  B, 0x0040-3
         MVI  A, 12
 DRAWLOOP:
         STA  (ROWLOOP+1)
@@ -44,56 +42,16 @@ DRAWLOOP:
         INX  D
         LDAX D      ; 3rd
         MOV  M, A
+        INX  H
+        INX  D
+        LDAX D      ; 4th
+        MOV  M, A
         INX  D
         DAD  B
 ROWLOOP:
         MVI  A, 12
         DCR  A
         JNZ  DRAWLOOP
-        MVI  A, 2
-        OUT  0xC2   ; Отключить видео ОЗУ
-        RET
-DRAWTILE2:
-        ADD  C
-        ADD  M
-        INR  H
-        MOV  H, M   ; high screen addr byte
-        MOV  L, A   ; low screen addr byte
-        INR  D
-        INR  D
-        INR  D      ; 2nd set of tiles + PAD
-        XRA  A
-        OUT  0xC2   ; Включить видео ОЗУ
-        LXI  B, 0x0040-3
-        MVI  A, 12
-DRAWLOOP2:
-        STA  (ROWLOOP2+1)
-        XCHG        ; HL = tile address
-        LDAX D      ; 1st
-        ANI  0xCC
-        ORA  M
-        STAX D
-        INX  H
-        INX  D
-        MOV  A, M   ; 2nd
-        STAX D
-        INX  H
-        INX  D
-        MOV  A, M   ; 3rd
-        STAX D
-        INX  H
-        INX  D
-        LDAX D      ; 4th
-        ANI  0x33
-        ORA  M
-        STAX D
-        INX  H
-        XCHG
-        DAD  B
-ROWLOOP2:
-        MVI  A, 12
-        DCR  A
-        JNZ  DRAWLOOP2
         MVI  A, 2
         OUT  0xC2   ; Отключить видео ОЗУ
         RET

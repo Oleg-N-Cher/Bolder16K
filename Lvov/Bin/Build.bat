@@ -7,7 +7,7 @@ EXIT
 :XDev
 
 SET CodeAdr=32768
-SET Modules=Labirint.o Control.o Rsrc.o GrApp.o GrTiles.o
+SET Modules=Labirint.o Control.o Rsrc.o GrApp.o GrTiles.o Console.o
 SET MainMod=Bolder16K
 SET Include=-I..\C
 SET FileExt=lvt

@@ -1,0 +1,17 @@
+#ifndef Console__oh
+#define Console__oh
+
+
+extern unsigned char Console_x, Console_y, Console_atr;
+
+#define Console_At(x,y)
+extern void Console_Clear (void);
+#define Console_Colors(atr)
+extern void Console_WriteCh (unsigned char ch) __z88dk_fastcall;
+extern void Console_WriteLn (void);
+extern void Console_WriteStr (unsigned char *str) __z88dk_fastcall;
+
+#define Console__init()
+
+
+#endif

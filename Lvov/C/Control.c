@@ -3,6 +3,7 @@
 
 void Control_ChangePalette (void);
 unsigned char Control_Get (void);
+unsigned char Control_GetCustom (void);
 unsigned char Control_PressedAnyKey (void);
 unsigned char Control_ReadKey (void);
 /*================================== Header ==================================*/
@@ -58,3 +59,17 @@ unsigned char Control_Get (void) {
         MOV  L, A
 #endasm
 } //Control_Get
+
+/*--------------------------------- Cut here ---------------------------------*/
+unsigned char Control_GetCustom (void) {
+#asm
+        ;CALL _Control_ChangePalette
+// Опрос дополнительной клавиатуры на нажатие "стрелок"
+        MVI  A, 0xF7
+        OUT  0xD2
+        IN   0xD2
+        CMA
+        ANI  0xF0
+        MOV  L, A
+#endasm
+} //Control_GetCustom

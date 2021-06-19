@@ -117,12 +117,12 @@ VAR
   i, n: NatInt;
 BEGIN
   TwoStep(-1);
-  IF lives-1 >= 0 THEN
+  IF lives # 0 THEN
     FOR n := 0 TO lives-1 DO Gr.DrawTile(n*2, 0, R.RightMan) END;
   END;
   Timer.Until;
   i := 1;
-  WHILE (i < FieldHeight) DO
+  WHILE i < FieldHeight DO
     TwoStep(-1);
     Timer.Until;
     INC(i)
