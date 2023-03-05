@@ -14,14 +14,14 @@
 #define Rsrc_FontSize       (96 * Rsrc_CharSize) // bytes
 #define _LastTileNum        17
 
-extern __at(0x0200) unsigned char Rsrc_field [256];
+extern const unsigned char Rsrc_field [256];
 extern const unsigned char _Rsrc_Levels [96*Rsrc_MaxLevelNumber];
 extern const unsigned char _Rsrc_Font [Rsrc_FontSize];
 extern const unsigned char _Rsrc_Tiles [Rsrc_TileSize * (_LastTileNum + 1)];
 extern const signed char Rsrc_CrossX [4];
 extern const signed char Rsrc_CrossY [4];
 
-typedef BYTE* Rsrc_Resource;
+typedef unsigned char* Rsrc_Resource;
 typedef unsigned int ADDRESS;
 typedef struct Rsrc_Monstr {
   unsigned char x, y;
@@ -59,8 +59,12 @@ typedef struct Rsrc_Monstr {
 #define Rsrc_ReadByte(rsrc) (*(BYTE*)rsrc++)
 
 extern Rsrc_Resource Rsrc_GetTileByNum (unsigned char num);
-extern unsigned char Rsrc_GetCell (unsigned char x, unsigned char y);
-extern unsigned char Rsrc_SetCell (unsigned char x, unsigned char y, unsigned char cell);
+extern unsigned char Rsrc_GetCell (unsigned char x, unsigned char y) __z88dk_callee;
+
+extern unsigned char SetCell_x;
+extern unsigned char SetCell_y;
+extern unsigned char Rsrc_SetCell_fastcall (/*unsigned char x, unsigned char y,*/ unsigned char cell) __z88dk_fastcall;
+#define Rsrc_SetCell(x, y, cell) SetCell_x=x; SetCell_y=y; Rsrc_SetCell_fastcall(cell)
 
 #define Rsrc__init()
 

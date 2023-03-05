@@ -1,8 +1,8 @@
 #include "Rsrc.oh"
 
 Rsrc_Resource Rsrc_GetTileByNum (unsigned char num);
-unsigned char Rsrc_GetCell (unsigned char x, unsigned char y);
-unsigned char Rsrc_SetCell (unsigned char x, unsigned char y, unsigned char cell);
+unsigned char Rsrc_GetCell (unsigned char x, unsigned char y) __z88dk_callee;
+void Rsrc_SetCell_fastcall (/*unsigned char x, unsigned char y,*/ unsigned char cell) __z88dk_fastcall;
 
 /*--------------------------------- Levels: ----------------------------------*/
 const unsigned char _Rsrc_Levels [96*Rsrc_MaxLevelNumber] = {
@@ -117,7 +117,7 @@ __at(0x0200) unsigned char Rsrc_field [256];
 extern const unsigned char _Rsrc_Tiles [Rsrc_TileSize * 18];
 
 Rsrc_Resource Rsrc_GetTileByNum (unsigned char num) {
-  return num*48 + &_Rsrc_Tiles;
+  return num*48 + (unsigned int)_Rsrc_Tiles;
 /*
     LD   H, #0
     LD   C, L   ; L = num
@@ -133,50 +133,63 @@ Rsrc_Resource Rsrc_GetTileByNum (unsigned char num) {
 } //Rsrc_GetTileByNum
 
 /*--------------------------------- Cut here ---------------------------------*/
-unsigned char Rsrc_GetCell (unsigned char x, unsigned char y) {
+unsigned char Rsrc_GetCell (unsigned char x, unsigned char y) __naked __z88dk_callee {
 // RETURN field [y DIV 2 * FieldWidth + x DIV 2]
-  return Rsrc_field[__ASHL(__ASHR(y, 1, SHORTINT), 4, SHORTINT) + __ASHR(x, 1, SHORTINT)];
-/*
-    POP  HL
-    EX   (SP), HL
-    LD   A, H   ; y
-    SRL  A      ; y DIV 2
-    ADD  A
-    ADD  A
-    ADD  A
-    ADD  A      ; y DIV 2 * FieldWidth
-    SRL  L      ; x DIV 2
-    ADD  L      ; y DIV 2 * FieldWidth + x DIV 2
-    LD   L, A
-    LD   H, #>_Rsrc_field
-    LD   L, (HL)
-    RET
-*/
+  //return Rsrc_field[__ASHL(__ASHR(y, 1, SHORTINT), 4, SHORTINT) + __ASHR(x, 1, SHORTINT)];
+#asm
+    pop  H
+    pop  D
+    xthl        ; L=x; E=y
+    mov  A, L
+    and  A
+    rar         ; x DIV 2
+    mov  L, A
+    mov  A, E   ; y
+    rrc         ; y DIV 2
+    add  A
+    add  A
+    add  A
+    add  A      ; y DIV 2 * FieldWidth
+    add  L      ; y DIV 2 * FieldWidth + x DIV 2
+    mov  L, A
+    lxi  D, _Rsrc_field
+    dad  D
+    //mvi  H, _Rsrc_field / 256
+    mov  L, M
+    ret
+#endasm
 } //Rsrc_GetCell
 
 /*--------------------------------- Cut here ---------------------------------*/
-unsigned char Rsrc_SetCell (unsigned char x, unsigned char y, unsigned char cell) {
+void Rsrc_SetCell_fastcall (/*unsigned char x, unsigned char y,*/ unsigned char cell) __naked __z88dk_fastcall {
 // field [y DIV 2 * FieldWidth + x DIV 2] := cell
-  Rsrc_field[__ASHL(__ASHR(y, 1, SHORTINT), 4, SHORTINT) + __ASHR(x, 1, SHORTINT)] = cell;
-/*
-    POP  DE
-    POP  HL     ; L = x; H = y
-    DEC  SP
-    POP  BC     ; B = cell
-    PUSH DE
-    LD   A, H   ; y
-    SRL  A      ; y DIV 2
-    ADD  A
-    ADD  A
-    ADD  A
-    ADD  A      ; y DIV 2 * FieldWidth
-    SRL  L      ; x DIV 2
-    ADD  L      ; y DIV 2 * FieldWidth + x DIV 2
-    LD   L, A
-    LD   H, #>_Rsrc_field
-    LD   (HL), B
-    RET
-*/
+  //Rsrc_field[__ASHL(__ASHR(y, 1, SHORTINT), 4, SHORTINT) + __ASHR(x, 1, SHORTINT)] = cell;
+#asm
+    mov  C, L   ; cell
+EXTERN _SetCell_x;
+    DB   0x3E   ; mvi  A,
+_SetCell_x:
+    DB   0      ; x
+    and  A
+    rar         ; x DIV 2
+    mov  L, A
+EXTERN _SetCell_y;
+    DB   0x3E   ; mvi  A,
+_SetCell_y:
+    DB   0      ; y
+    rrc         ; y DIV 2
+    add  A
+    add  A
+    add  A
+    add  A      ; y DIV 2 * FieldWidth
+    add  L      ; y DIV 2 * FieldWidth + x DIV 2
+    mov  L, A
+    lxi  D, _Rsrc_field
+    dad  D
+    ;mvi  H, _Rsrc_field / 256
+    mov  M, C
+    ret
+#endasm
 } //Rsrc_SetCell
 
 /*--------------------------- Dash's set of tiles: ---------------------------*/
