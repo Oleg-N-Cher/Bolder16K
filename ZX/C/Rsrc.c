@@ -2,7 +2,7 @@
 
 Rsrc_Resource Rsrc_GetTileByNum (unsigned char num) __z88dk_fastcall;
 unsigned char Rsrc_GetCell (unsigned char x, unsigned char y) __z88dk_callee;
-unsigned char Rsrc_SetCell (unsigned char x, unsigned char y, unsigned char cell) __z88dk_callee;
+void Rsrc_SetCell (unsigned char x, unsigned char y, unsigned char cell) __z88dk_callee;
 
 /*--------------------------- Dash's set of tiles: ---------------------------*/
 const unsigned char _Rsrc_Tiles [Rsrc_TileSize * 18] = {
@@ -194,7 +194,7 @@ unsigned char Rsrc_GetCell (unsigned char x, unsigned char y) __naked __z88dk_ca
     POP  HL
     EX   (SP), HL
     LD   A, H   ; y
-    SRL  A      ; y DIV 2
+    RRCA        ; y DIV 2
     ADD  A
     ADD  A
     ADD  A
@@ -218,7 +218,7 @@ unsigned char Rsrc_SetCell (unsigned char x, unsigned char y, unsigned char cell
     POP  BC     ; B = cell
     PUSH DE
     LD   A, H   ; y
-    SRL  A      ; y DIV 2
+    RRCA        ; y DIV 2
     ADD  A
     ADD  A
     ADD  A

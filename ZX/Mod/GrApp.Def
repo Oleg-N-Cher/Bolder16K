@@ -1,13 +1,13 @@
-MODULE [foreign] GrApp; IMPORT SYSTEM, Timer;
+MODULE GrApp; IMPORT SYSTEM, Timer;
 
 TYPE
   BYTE = SYSTEM.BYTE;
   Coords = BYTE; Color = BYTE;
 
-PROCEDURE- Close;
-PROCEDURE- Cls;
-PROCEDURE- Redraw;
-PROCEDURE- ScrollDown (lines: (* {1..191} *) BYTE);
-PROCEDURE- ScrollUp (lines: (* {1..191} *) BYTE);
+PROCEDURE- Close*;
+PROCEDURE- Cls*;
+PROCEDURE- Redraw*;
+PROCEDURE- ScrollDown* (lines: (* {1..191} *) BYTE);
+PROCEDURE- ScrollUp* (lines: (* {1..191} *) BYTE);
 
 END GrApp.

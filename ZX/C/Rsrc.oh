@@ -60,7 +60,7 @@ typedef struct Rsrc_Monstr {
 
 extern Rsrc_Resource Rsrc_GetTileByNum (unsigned char num) __z88dk_fastcall __preserves_regs(a,d,e,iyl,iyh);
 extern unsigned char Rsrc_GetCell (unsigned char x, unsigned char y) __z88dk_callee __preserves_regs(b,c,d,e,iyl,iyh);
-extern unsigned char Rsrc_SetCell (unsigned char x, unsigned char y, unsigned char cell) __z88dk_callee __preserves_regs(iyl,iyh);
+extern void Rsrc_SetCell (unsigned char x, unsigned char y, unsigned char cell) __z88dk_callee __preserves_regs(iyl,iyh);
 
 #define Rsrc__init()
 
