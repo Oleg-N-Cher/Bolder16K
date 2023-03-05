@@ -1,0 +1,11 @@
+MODULE [foreign] Sound; IMPORT SYSTEM;
+
+TYPE BYTE = SYSTEM.BYTE;
+
+PROCEDURE- TitleNext*;
+PROCEDURE- Death* (y: (* {0..30} *) BYTE);
+PROCEDURE- DropStoneOrAlmas* (y: (* {0..30} *) BYTE);
+PROCEDURE- GetAlmas* (x_plus_y: (* {0..60} *) BYTE);
+PROCEDURE- KeyPressed*;
+
+END Sound.

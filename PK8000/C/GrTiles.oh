@@ -1,0 +1,15 @@
+#ifndef GrTiles__oh
+#define GrTiles__oh
+
+
+extern unsigned char GrTiles_x;
+extern unsigned char GrTiles_y;
+
+extern void GrTiles_DrawTile_fastcall (/*unsigned char x, unsigned char y,*/ unsigned char* tile) __z88dk_fastcall;
+#define GrTiles_DrawTile(x,y,tile) GrTiles_x=x; GrTiles_y=y; GrTiles_DrawTile_fastcall(tile)
+
+#define GrTiles__init()
+
+
+#endif
+

@@ -1,6 +1,8 @@
 Lvov/Obj/*.asm
 Lvov/Obj/*.c
 Lvov/Obj/*.o
+PK8000/Obj/*.c
+PK8000/Obj/*.o
 ZX/Obj/*.asm
 ZX/Obj/*.bin
 ZX/Obj/*.c

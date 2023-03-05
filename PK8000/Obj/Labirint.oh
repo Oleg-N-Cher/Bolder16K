@@ -1,0 +1,15 @@
+/* Ofront+ 1.0 -sx3 -21 */
+
+#ifndef Labirint__oh
+#define Labirint__oh
+
+#include "SYSTEM.oh"
+
+
+import CHAR Labirint_lives;
+
+
+import BOOLEAN Labirint_Play (CHAR room);
+
+
+#endif

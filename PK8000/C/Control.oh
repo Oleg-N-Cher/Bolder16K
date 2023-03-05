@@ -1,0 +1,16 @@
+#ifndef Control__oh
+#define Control__oh
+
+//#include "Config.oh"
+
+
+extern unsigned char Control_GetCustom (void);
+extern unsigned char Control_Get (void);
+extern unsigned char Control_ReadKey (void); // With auto-repeat
+extern unsigned char Control_PressedAnyKey (void);
+extern void Control_Close (void);
+
+extern void Control__init (void);
+
+
+#endif

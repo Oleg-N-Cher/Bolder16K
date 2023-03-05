@@ -1,0 +1,15 @@
+MODULE Control; IMPORT SYSTEM, GrApp;
+
+CONST
+  Right* = 3; Left* = 0; Down* = 2; Up* = 1; Fire* = 4; Esc* = 5;
+
+TYPE
+  Key* = CHAR; Keys* = SET;
+
+PROCEDURE- Get* (): Keys;
+PROCEDURE- GetCustom* (): Keys;
+PROCEDURE- ReadKey* (): Key; (* With auto-repeat *)
+PROCEDURE- PressedAnyKey* (): BOOLEAN;
+PROCEDURE- Close*;
+
+END Control.

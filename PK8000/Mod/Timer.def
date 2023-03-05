@@ -1,0 +1,10 @@
+MODULE [foreign] Timer; IMPORT SYSTEM;
+
+CONST
+  Mul* = 50; Div* = 18.2;
+
+(** Max. delay time = 32767/50/60 ~= 10.922 min *)
+PROCEDURE- Start (ticks: INT32);
+PROCEDURE- Until;
+
+END Timer.
