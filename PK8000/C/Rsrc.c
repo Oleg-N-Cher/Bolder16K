@@ -111,7 +111,7 @@ const unsigned char _Rsrc_Levels [96*Rsrc_MaxLevelNumber] = {
 const signed char Rsrc_CrossX [4] = { 1, 0, -1, 0 };
 const signed char Rsrc_CrossY [4] = { 0, 1, 0, -1 };
 
-/*__at(0x4000)*/ unsigned char Rsrc_field [256];
+__at(0x4000) unsigned char Rsrc_field [256];
 
 /*--------------------------------- Cut here ---------------------------------*/
 extern const unsigned char _Rsrc_Tiles [Rsrc_TileSize * 18];
@@ -138,26 +138,25 @@ unsigned char Rsrc_GetCell (unsigned char x, unsigned char y) __naked __z88dk_ca
 // RETURN field [y DIV 2 * FieldWidth + x DIV 2]
   //return Rsrc_field[__ASHL(__ASHR(y, 1, SHORTINT), 4, SHORTINT) + __ASHR(x, 1, SHORTINT)];
 #asm
-    pop  H
-    pop  D
-    xthl        ; L=x; E=y
-    mov  A, L
-    and  A
-    rar         ; x DIV 2
-    mov  L, A
-    mov  A, E   ; y
-    rrc         ; y DIV 2
-    add  A
-    add  A
-    add  A
-    add  A      ; y DIV 2 * FieldWidth
-    add  L      ; y DIV 2 * FieldWidth + x DIV 2
-    mov  L, A
-    lxi  D, _Rsrc_field
-    dad  D
-    //mvi  H, _Rsrc_field / 256
-    mov  L, M
-    ret
+        pop  H
+        pop  D
+        xthl        ; L=x; E=y
+        mov  A, L
+        and  A
+        rar         ; x DIV 2
+        mov  L, A
+        mov  A, E   ; y
+        ani  0x1E   ; y DIV 2 * 2
+        add  A
+        add  A
+        add  A      ; y DIV 2 * FieldWidth
+        add  L      ; y DIV 2 * FieldWidth + x DIV 2
+        mov  L, A
+        // lxi  D, _Rsrc_field
+        // dad  D
+        mvi  H, _Rsrc_field / 256
+        mov  L, M
+        ret
 #endasm
 } //Rsrc_GetCell
 
@@ -166,30 +165,29 @@ void Rsrc_SetCell_fastcall (/*unsigned char x, unsigned char y,*/ unsigned char 
 // field [y DIV 2 * FieldWidth + x DIV 2] := cell
   //Rsrc_field[__ASHL(__ASHR(y, 1, SHORTINT), 4, SHORTINT) + __ASHR(x, 1, SHORTINT)] = cell;
 #asm
-    mov  C, L   ; cell
+        mov  C, L   ; cell
 EXTERN _SetCell_x;
-    DB   0x3E   ; mvi  A,
+        db   0x3E   ; mvi  A,
 _SetCell_x:
-    DB   0      ; x
-    and  A
-    rar         ; x DIV 2
-    mov  L, A
+        db   0      ; x
+        and  A
+        rar         ; x DIV 2
+        mov  L, A
 EXTERN _SetCell_y;
-    DB   0x3E   ; mvi  A,
+        db   0x3E   ; mvi  A,
 _SetCell_y:
-    DB   0      ; y
-    rrc         ; y DIV 2
-    add  A
-    add  A
-    add  A
-    add  A      ; y DIV 2 * FieldWidth
-    add  L      ; y DIV 2 * FieldWidth + x DIV 2
-    mov  L, A
-    lxi  D, _Rsrc_field
-    dad  D
-    ;mvi  H, _Rsrc_field / 256
-    mov  M, C
-    ret
+        db   0      ; y
+        ani  0x1E   ; y DIV 2 * 2
+        add  A
+        add  A
+        add  A      ; y DIV 2 * FieldWidth
+        add  L      ; y DIV 2 * FieldWidth + x DIV 2
+        mov  L, A
+        // lxi  D, _Rsrc_field
+        // dad  D
+        mvi  H, _Rsrc_field / 256
+        mov  M, C
+        ret
 #endasm
 } //Rsrc_SetCell
 

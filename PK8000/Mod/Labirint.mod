@@ -1,6 +1,6 @@
 ﻿MODULE [noinit] Labirint; (** portable *)
 IMPORT
-  Scr := GrApp, Gr := GrTiles, R := Rsrc, Ctrl := Control, Timer, Sound;
+  Scr := GrApp, Gr := GrTiles, R := Rsrc, Ctrl := Control, Timer, Sound, SYSTEM;
 
 CONST
   MaxMonsters = 128;
@@ -51,6 +51,7 @@ VAR
   manX, manY: Coords; manDirX, manDirY: INT8;
   manPresent: BOOLEAN;
   lives*: NatInt;
+  adr: ADRINT;
 
 (* -------------------------------------------------------------------------------- *)
 (* Base procedures for manipulating cell array, unpack levels and display labirinth *)
@@ -103,7 +104,7 @@ BEGIN
     x := 0;
     WHILE x < FieldWidth * 2 DO
       Gr.DrawTile(x, y, R.GetTileByNum( R.GetCell(x, y)) );
-      INC(x, 2);
+      INC(x, SideRight);
     END;
     Scr.Redraw;
     INC(y, 2);
@@ -176,7 +177,7 @@ BEGIN
     WHILE tX <= plusX DO
       Gr.DrawTile(tX, tY, R.Almas);
       R.SetCell(tX, tY, Almas);
-      INC(tX, 2)
+      INC(tX, SideRight)
     END;
     INC(tY, 2)
   END;
@@ -235,7 +236,7 @@ BEGIN
   ELSE (* Babo, Mina, Babo1, Mina1, StopMan, UpMan, UpMan1,
           DownMan, DownMan1, RightMan, RightMan1, LeftMan, LeftMan1 *)
     SceneOfDeath(objX, objY + 2);
-    INC(objX, 2);
+    INC(objX, SideRight); INC(adr);
   END;
 END NextFall;
 
@@ -274,7 +275,7 @@ BEGIN
   (* Специфично для скатывания вправо - чтобы этот камень или алмаз мог
      только скатиться и не был повторно обработан в следующей клетке -
      мы его новую клетку пропускаем: *)
-  IF side = SideRight THEN INC(objX, SideRight) END;
+  IF side = SideRight THEN INC(objX, SideRight); INC(adr) END;
 END RollTo;
 
 (* ================================== Activate ============================== *)
@@ -592,11 +593,13 @@ BEGIN
 (*------------Д-В-И-Ж-Е-Н-И-Е---К-А-М-Н-Е-Й---И---А-Л-М-А-З-О-В------------*)
    (*almas*)number := 0;
    objY := FieldHeight * 2;
+   adr := SYSTEM.ADR(R.field[R.FieldWidth*(R.FieldHeight - 1)]);
    WHILE objY > 0 DO (*Просмотр снизу вверх по строкам*)
      DEC(objY, 2);
      objX := 0;
      WHILE objX < FieldWidth * 2 DO (*Просмотр строки слева направо*)
-       objCell := R.GetCell(objX, objY);
+       SYSTEM.GET(adr, objCell);
+       (*IF R.GetCell(objX, objY) # objCell THEN LOOP END END;*)
        CASE objCell OF (*Отдельно - подсчет алмазов*)
          Almas, ActiveAlmas1, ActiveAlmas2 :
            INC((*almas*)number)
@@ -635,8 +638,9 @@ BEGIN
            R.SetCell(objX, objY - 2, None);
            (*continue;*) (*Он пролетел в следующую клетку*)
        ELSE END;
-       INC(objX, 2);
+       INC(objX, SideRight); INC(adr);
      END;
+     DEC(adr, 2*R.FieldWidth);
    END;
    manPresent := CheckMan();
    IF ~manPresent THEN EXIT END; (*Check for game end*)
